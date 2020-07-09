@@ -3,44 +3,60 @@
 from arithmetic import (add, subtract, multiply, divide, square, cube,
                         power, mod, )
 
+from functools import reduce
+
 def calculator():
 
     while True:
         promt = input("Enter your equation > ")
         tokens = promt.split(' ')
+
+        operator, *token_nums = tokens
+
+        nums = []
         
-        first_token = tokens[0]
+        answer = None
 
+        try:
+            for num in token_nums:
+                nums.append(float(num))
+        except:
+            print("Error! All operands must be numbers. Try again.")
+            continue
 
-        if first_token == 'q':
-            return
+        if 'q' in tokens:
+            break
 
         else:
-            second_token = int(tokens[1])
-            third_token = int(tokens[2])            
-            if first_token == 'pow':
-                print(multiply(second_token, third_token))
+          
+            if operator == 'pow':
+                answer = reduce(power, nums)
 
-            elif first_token == '+':
-                print(add(second_token, third_token))
+            elif operator == '+':
+                answer = reduce(add, nums)
 
-            elif first_token == '-':
-                print(subtract(second_token, third_token))
+            elif operator == '-':
+                answer = reduce(subtract, nums)
 
-            elif first_token == '*':
-                print(multiply(second_token, third_token))
+            elif operator == '*':
+                answer = reduce(multiply, nums)
 
-            elif first_token == '/':
-                print(divide(second_token, third_token))
+            elif operator == '/':
+                answer = reduce(divide, nums)
 
-            elif first_token == 'square':
-                print(square(second_token, third_token))
+            elif operator == 'square':
+                answer = square(nums[0])
 
-            elif first_token == 'cube':
-                print(cube(second_token, third_token))
+            elif operator == 'cube':
+                answer = cube(nums[0])
 
-            elif first_token == 'mod':
-                print(mod(second_token, third_token))
+            elif operator == 'mod':
+                answer = reduce(mod, nums)
+            else:
+                print("You entered an invalid operator")
+                continue
+
+            print(answer)
 
 
 calculator()
